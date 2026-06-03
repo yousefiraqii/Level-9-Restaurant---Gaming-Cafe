@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 9 | Gaming Restaurant & Cafe - Cairo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .gaming-font { font-family: 'Orbitron', monospace; }
+        .neon-glow { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
+        .bg-dark { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); }
+    </style>
+</head>
+<body class="bg-dark text-white">
+    <nav class="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-green-500/30">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-3xl gaming-font font-bold text-green-500 neon-glow">LEVEL 9</span>
+                    <span class="text-xs text-gray-400">RESTAURANT & GAMING</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="hover:text-green-400 transition">Home</a>
+                    <a href="#menu" class="hover:text-green-400 transition">Menu</a>
+                    <a href="#gallery" class="hover:text-green-400 transition">Gallery</a>
+                    <a href="#reserve" class="hover:text-green-400 transition">Reserve</a>
+                    <a href="admin.html" class="text-green-500 border border-green-500 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-black transition">Admin</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center pt-20">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-6xl md:text-7xl gaming-font font-bold mb-4">
+                        <span class="text-green-500 neon-glow">LEVEL UP</span><br>
+                        Your Night
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8">Mixed cuisine restaurant + 12 PS5 consoles. Play while you eat, eat while you play.</p>
+                    <div class="flex space-x-4">
+                        <a href="#reserve" class="bg-green-500 text-black px-8 py-3 rounded-lg font-bold hover:bg-green-400 transition">Book Now →</a>
+                        <a href="#menu" class="border border-green-500 px-8 py-3 rounded-lg hover:bg-green-500/20 transition">View Menu</a>
+                    </div>
+                    <div class="mt-8 flex space-x-6">
+                        <div><span class="text-2xl font-bold text-green-500">12</span><br>Tables</div>
+                        <div><span class="text-2xl font-bold text-green-500">12</span><br>PS5 Consoles</div>
+                        <div><span class="text-2xl font-bold text-green-500">50 EGP</span><br>/Hour Gaming</div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-3xl"></div>
+                    <img src="https://images.unsplash.com/photo-1551103782-8ab5afd6c836?w=600" alt="Gaming setup" class="rounded-2xl shadow-2xl relative z-10">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="py-20 bg-black/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl gaming-font text-center mb-12">⚡ DIGITAL MENU ⚡</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white/5 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-green-400 mb-6">🍔 MAIN DISHES</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between"><span>Level 9 Double Burger</span><span class="text-green-400">180 EGP</span></div>
+                        <div class="flex justify-between"><span>Peri-Peri Chicken</span><span class="text-green-400">160 EGP</span></div>
+                        <div class="flex justify-between"><span>Mixed Grill Platter</span><span class="text-green-400">250 EGP</span></div>
+                        <div class="flex justify-between"><span>Beef Shawarma Plate</span><span class="text-green-400">140 EGP</span></div>
+                        <div class="flex justify-between"><span>Chicken Alfredo Pasta</span><span class="text-green-400">130 EGP</span></div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-green-400 mb-6">🍕 APPETIZERS & PIZZA</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between"><span>Loaded Nachos</span><span class="text-green-400">90 EGP</span></div>
+                        <div class="flex justify-between"><span>Buffalo Wings (8 pcs)</span><span class="text-green-400">120 EGP</span></div>
+                        <div class="flex justify-between"><span>Pepperoni Pizza</span><span class="text-green-400">150 EGP</span></div>
+                        <div class="flex justify-between"><span>Cheesy Fries</span><span class="text-green-400">70 EGP</span></div>
+                        <div class="flex justify-between"><span>Onion Rings</span><span class="text-green-400">60 EGP</span></div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-green-400 mb-6">🇪🇬 EGYPTIAN SPECIALS</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between"><span>Koshari (Large)</span><span class="text-green-400">80 EGP</span></div>
+                        <div class="flex justify-between"><span>Fatta with Lamb</span><span class="text-green-400">220 EGP</span></div>
+                        <div class="flex justify-between"><span>Hawawshi (2 pcs)</span><span class="text-green-400">90 EGP</span></div>
+                        <div class="flex justify-between"><span>Alexandrian Liver</span><span class="text-green-400">110 EGP</span></div>
+                    </div>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-green-400 mb-6">🥤 DRINKS</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between"><span>Soft Drinks (Can)</span><span class="text-green-400">25 EGP</span></div>
+                        <div class="flex justify-between"><span>Fresh Juices</span><span class="text-green-400">40-60 EGP</span></div>
+                        <div class="flex justify-between"><span>Hot Drinks (Coffee/Tea)</span><span class="text-green-400">35 EGP</span></div>
+                        <div class="flex justify-between"><span>Energy Drink</span><span class="text-green-400">45 EGP</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl gaming-font text-center mb-12">📸 VENUE GALLERY</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400" alt="Gaming area" class="rounded-2xl hover:scale-105 transition duration-300">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Restaurant interior" class="rounded-2xl hover:scale-105 transition duration-300">
+                <img src="https://images.unsplash.com/photo-1592861956120-e524fc739696?w=400" alt="Food" class="rounded-2xl hover:scale-105 transition duration-300">
+            </div>
+        </div>
+    </section>
+
+    <section id="reserve" class="py-20 bg-black/50">
+        <div class="container mx-auto px-6 max-w-4xl">
+            <h2 class="text-4xl gaming-font text-center mb-12">🎮 MAKE A RESERVATION</h2>
+            <div id="connectionStatus" class="mb-4 p-3 rounded-lg text-center"></div>
+            <div class="bg-white/10 rounded-2xl p-8">
+                <form id="bookingForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block mb-2">Booking Type *</label>
+                            <select id="resourceType" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                                <option value="table">🍽️ Table (Dining Only)</option>
+                                <option value="ps5">🎮 PS5 Console + Gaming (50 EGP/hour)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Date *</label>
+                            <input type="date" id="date" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Hour (1-hour slot) *</label>
+                            <select id="hourSlot" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                                <option value="">-- Select a date first --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Your Name *</label>
+                            <input type="text" id="guestName" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block mb-2">Phone Number *</label>
+                            <input type="tel" id="guestPhone" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                        </div>
+                    </div>
+                    <button type="submit" id="submitBtn" class="w-full bg-green-500 text-black font-bold py-3 rounded-lg hover:bg-green-400 transition">Confirm Reservation</button>
+                </form>
+                <div id="message" class="mt-4 text-center hidden"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black/80 py-10 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <p>20 Street 9, Sakanat, El Maadi, Cairo | 📞 0227516662</p>
+        </div>
+    </footer>
+
+    <script>
+        // ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE CREDENTIALS
+        const SUPABASE_URL = 'https://valutzpbnwdxrbgwyeld.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_c0u-6UfiWcB_IE6EYbPOMQ_1vaKRPGv';
+        
+        // Initialize Supabase
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let resourcesCache = { table: [], ps5: [] };
+        
+        async function testConnection() {
+            const statusDiv = document.getElementById('connectionStatus');
+            statusDiv.innerHTML = '🔄 Connecting to Supabase...';
+            statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-yellow-500/20 text-yellow-300';
+            
+            try {
+                const { data, error } = await supabaseClient.from('settings').select('key').limit(1);
+                
+                if (error) {
+                    statusDiv.innerHTML = '❌ Connection failed! Error: ' + error.message;
+                    statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-red-500/20 text-red-300';
+                    return false;
+                }
+                
+                statusDiv.innerHTML = '✅ Connected to Supabase! You can make reservations.';
+                statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-green-500/20 text-green-300';
+                return true;
+                
+            } catch (err) {
+                statusDiv.innerHTML = '❌ Connection error: ' + err.message;
+                statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-red-500/20 text-red-300';
+                return false;
+            }
+        }
+        
+        async function loadResources() {
+            const { data, error } = await supabaseClient.from('resources').select('*').eq('is_active', true);
+            if (error) {
+                console.error('Error loading resources:', error);
+                return false;
+            }
+            resourcesCache.table = data.filter(r => r.type === 'table');
+            resourcesCache.ps5 = data.filter(r => r.type === 'ps5');
+            console.log('Resources loaded:', resourcesCache.table.length, 'tables,', resourcesCache.ps5.length, 'PS5s');
+            return true;
+        }
+        
+        async function loadAvailableSlots() {
+            const date = document.getElementById('date').value;
+            const type = document.getElementById('resourceType').value;
+            const select = document.getElementById('hourSlot');
+            
+            if (!date) {
+                select.innerHTML = '<option value="">-- Select a date first --</option>';
+                return;
+            }
+            
+            select.innerHTML = '<option value="">Loading available hours...</option>';
+            select.disabled = true;
+            
+            try {
+                const { data: settings } = await supabaseClient
+                    .from('settings')
+                    .select('key, value')
+                    .in('key', ['open_hour', 'close_hour']);
+                
+                const openHour = parseInt(settings?.find(s => s.key === 'open_hour')?.value || '10');
+                const closeHour = parseInt(settings?.find(s => s.key === 'close_hour')?.value || '23');
+                
+                const resources = resourcesCache[type];
+                if (!resources || resources.length === 0) {
+                    select.innerHTML = '<option value="">No resources available</option>';
+                    select.disabled = false;
+                    return;
+                }
+                
+                const resourceIds = resources.map(r => r.id);
+                
+                const { data: bookings } = await supabaseClient
+                    .from('reservations')
+                    .select('hour_slot')
+                    .eq('reservation_date', date)
+                    .in('resource_id', resourceIds)
+                    .eq('status', 'confirmed');
+                
+                const bookedCount = {};
+                bookings?.forEach(b => {
+                    bookedCount[b.hour_slot] = (bookedCount[b.hour_slot] || 0) + 1;
+                });
+                
+                select.innerHTML = '<option value="">-- Select an hour --</option>';
+                select.disabled = false;
+                
+                let hasAvailable = false;
+                for (let hour = openHour; hour < closeHour; hour++) {
+                    const taken = bookedCount[hour] || 0;
+                    if (taken < resources.length) {
+                        hasAvailable = true;
+                        const option = document.createElement('option');
+                        option.value = hour;
+                        option.textContent = `${hour}:00 - ${hour+1}:00 ${taken > 0 ? `(${resources.length - taken} left)` : ''}`;
+                        select.appendChild(option);
+                    }
+                }
+                
+                if (!hasAvailable) {
+                    select.innerHTML = '<option value="">No available hours on this date</option>';
+                }
+                
+            } catch (error) {
+                console.error('Error loading slots:', error);
+                select.innerHTML = '<option value="">Error loading hours</option>';
+                select.disabled = false;
+            }
+        }
+        
+        // Initialize page
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('date');
+        dateInput.value = today;
+        dateInput.min = today;
+        
+        // Add event listeners
+        document.getElementById('date').addEventListener('change', loadAvailableSlots);
+        document.getElementById('resourceType').addEventListener('change', loadAvailableSlots);
+        
+        // Handle form submission
+        const form = document.getElementById('bookingForm');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const type = document.getElementById('resourceType').value;
+            const date = document.getElementById('date').value;
+            const hourSlot = parseInt(document.getElementById('hourSlot').value);
+            const guestName = document.getElementById('guestName').value.trim();
+            const guestPhone = document.getElementById('guestPhone').value.trim();
+            const messageDiv = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Validation
+            if (!hourSlot) {
+                messageDiv.innerHTML = '<div class="text-yellow-500">⚠️ Please select an hour slot</div>';
+                messageDiv.classList.remove('hidden');
+                return;
+            }
+            
+            if (!guestName || !guestPhone) {
+                messageDiv.innerHTML = '<div class="text-yellow-500">⚠️ Please enter your name and phone number</div>';
+                messageDiv.classList.remove('hidden');
+                return;
+            }
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+            messageDiv.classList.add('hidden');
+            
+            try {
+                const resources = resourcesCache[type];
+                const resourceIds = resources.map(r => r.id);
+                
+                // Check availability again
+                const { data: booked } = await supabaseClient
+                    .from('reservations')
+                    .select('resource_id')
+                    .eq('reservation_date', date)
+                    .eq('hour_slot', hourSlot)
+                    .in('resource_id', resourceIds)
+                    .eq('status', 'confirmed');
+                
+                const bookedIds = new Set(booked?.map(b => b.resource_id) || []);
+                const availableResource = resources.find(r => !bookedIds.has(r.id));
+                
+                if (!availableResource) {
+                    messageDiv.innerHTML = '<div class="text-red-500">❌ Sorry, this slot was just taken! Please choose another hour.</div>';
+                    messageDiv.classList.remove('hidden');
+                    loadAvailableSlots(); // Refresh available slots
+                    return;
+                }
+                
+                // Create reservation
+                const { error: insertError } = await supabaseClient.from('reservations').insert({
+                    resource_id: availableResource.id,
+                    guest_name: guestName,
+                    guest_phone: guestPhone,
+                    reservation_date: date,
+                    hour_slot: hourSlot,
+                    status: 'confirmed'
+                });
+                
+                if (insertError) throw insertError;
+                
+                // Success
+                messageDiv.innerHTML = '<div class="text-green-500">✅ Reservation confirmed! See you at Level 9! 🎮</div>';
+                messageDiv.classList.remove('hidden');
+                
+                // Clear name and phone
+                document.getElementById('guestName').value = '';
+                document.getElementById('guestPhone').value = '';
+                
+                // Refresh available slots
+                await loadAvailableSlots();
+                
+            } catch (error) {
+                console.error('Reservation error:', error);
+                messageDiv.innerHTML = '<div class="text-red-500">❌ Error: ' + error.message + '</div>';
+                messageDiv.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm Reservation';
+            }
+        });
+        
+        // Start the app
+        testConnection().then(connected => {
+            if (connected) {
+                loadResources().then(() => {
+                    loadAvailableSlots();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

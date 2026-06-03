@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 9 - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        .gaming-font { font-family: 'Orbitron', monospace; }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div class="container mx-auto px-6 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl gaming-font text-green-500">LEVEL 9 ADMIN</h1>
+            <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded hidden hover:bg-red-600 transition">Logout</button>
+        </div>
+
+        <div id="loginScreen" class="max-w-md mx-auto bg-white/10 rounded-2xl p-8 mt-20">
+            <h2 class="text-2xl mb-4">Admin Login</h2>
+            <input type="password" id="adminPassword" placeholder="Enter password" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded mb-4">
+            <button id="loginBtn" class="w-full bg-green-500 text-black py-2 rounded font-bold hover:bg-green-400 transition">Login</button>
+            <div id="loginError" class="mt-3 text-red-400 text-center hidden"></div>
+        </div>
+
+        <div id="adminContent" class="hidden">
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white/5 rounded-2xl p-6">
+                    <h3 class="text-xl font-bold mb-3">📊 Today's Reservations</h3>
+                    <div id="todayCount" class="text-3xl text-green-500">0</div>
+                </div>
+                <div class="bg-white/5 rounded-2xl p-6">
+                    <h3 class="text-xl font-bold mb-3">🎮 Resource Status</h3>
+                    <button id="toggleTablesBtn" class="bg-blue-500 px-3 py-1 rounded text-sm mr-2 hover:bg-blue-600 transition">Toggle Tables</button>
+                    <button id="togglePS5Btn" class="bg-purple-500 px-3 py-1 rounded text-sm hover:bg-purple-600 transition">Toggle PS5s</button>
+                </div>
+            </div>
+
+            <div class="bg-white/5 rounded-2xl p-6">
+                <h3 class="text-xl font-bold mb-4">📋 All Reservations</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="border-b border-green-500">
+                            <tr>
+                                <th class="text-left py-2">Date</th>
+                                <th class="text-left py-2">Hour</th>
+                                <th class="text-left py-2">Type</th>
+                                <th class="text-left py-2">Guest</th>
+                                <th class="text-left py-2">Phone</th>
+                                <th class="text-left py-2">Status</th>
+                                <th class="text-left py-2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE CREDENTIALS
+        const SUPABASE_URL = 'https://valutzpbnwdxrbgwyeld.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_c0u-6UfiWcB_IE6EYbPOMQ_1vaKRPGv';
+        
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let currentAdminPassword = null;
+        
+        // Fetch admin password from Supabase
+        async function getAdminPassword() {
+            const { data, error } = await supabaseClient
+                .from('settings')
+                .select('value')
+                .eq('key', 'admin_password')
+                .single();
+            
+            if (error) {
+                console.error('Error fetching admin password:', error);
+                return 'admin123'; // fallback
+            }
+            return data.value;
+        }
+        
+        async function loadReservations() {
+            const { data, error } = await supabaseClient
+                .from('reservations')
+                .select('*, resources(name, type)')
+                .order('reservation_date', { ascending: false })
+                .order('hour_slot', { ascending: true });
+            
+            if (error) {
+                console.error('Error loading reservations:', error);
+                return;
+            }
+            
+            const tbody = document.getElementById('reservationsList');
+            tbody.innerHTML = '';
+            let todayCount = 0;
+            const today = new Date().toISOString().split('T')[0];
+            
+            data.forEach(res => {
+                if (res.reservation_date === today && res.status === 'confirmed') todayCount++;
+                
+                tbody.innerHTML += `
+                    <tr class="border-b border-gray-800">
+                        <td class="py-2">${res.reservation_date}</td>
+                        <td class="py-2">${res.hour_slot}:00 - ${res.hour_slot + 1}:00</td>
+                        <td class="py-2">${res.resources?.type === 'ps5' ? '🎮 PS5' : '🍽️ Table'}</td>
+                        <td class="py-2">${res.guest_name}</td>
+                        <td class="py-2">${res.guest_phone}</td>
+                        <td class="py-2">
+                            <span class="${res.status === 'confirmed' ? 'text-green-400' : 'text-red-400'}">
+                                ${res.status}
+                            </span>
+                        </td>
+                        <td class="py-2">
+                            ${res.status === 'confirmed' ? 
+                                `<button onclick="cancelReservation(${res.id})" class="bg-red-500/50 px-2 py-1 rounded text-xs hover:bg-red-500 transition">Cancel</button>` : 
+                                '—'}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            document.getElementById('todayCount').innerHTML = todayCount;
+        }
+        
+        window.cancelReservation = async (id) => {
+            if (confirm('Are you sure you want to cancel this reservation?')) {
+                const { error } = await supabaseClient
+                    .from('reservations')
+                    .update({ status: 'cancelled' })
+                    .eq('id', id);
+                
+                if (error) {
+                    alert('Error cancelling reservation: ' + error.message);
+                } else {
+                    loadReservations();
+                }
+            }
+        };
+        
+        // Handle login
+        document.getElementById('loginBtn').onclick = async () => {
+            const enteredPassword = document.getElementById('adminPassword').value;
+            const correctPassword = await getAdminPassword();
+            const errorDiv = document.getElementById('loginError');
+            
+            if (enteredPassword === correctPassword) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                loadReservations();
+                errorDiv.classList.add('hidden');
+            } else {
+                errorDiv.innerHTML = '❌ Wrong password!';
+                errorDiv.classList.remove('hidden');
+            }
+        };
+        
+        // Handle logout
+        document.getElementById('logoutBtn').onclick = () => {
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('adminContent').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('adminPassword').value = '';
+        };
+        
+        // Handle toggling resources (optional feature)
+        document.getElementById('toggleTablesBtn').onclick = () => {
+            alert('This will toggle all tables on/off. Implement if needed.');
+        };
+        
+        document.getElementById('togglePS5Btn').onclick = () => {
+            alert('This will toggle all PS5s on/off. Implement if needed.');
+        };
+        
+        // Enter key to login
+        document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('loginBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>
