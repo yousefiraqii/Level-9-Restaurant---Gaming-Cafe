@@ -3,211 +3,637 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level 9 | Gaming Restaurant & Cafe - Cairo</title>
+    <title>LEVEL 9 | Restaurant & Gaming Cafe - Cairo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
-        .gaming-font { font-family: 'Orbitron', monospace; }
-        .neon-glow { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00; }
-        .bg-dark { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Galaxy Background */
+        .galaxy-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at center, #0a0a1a 0%, #020208 100%);
+        }
+        
+        /* Stars Animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Nebula Clouds */
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: -1;
+            animation: drift 30s infinite ease-in-out;
+        }
+        
+        .nebula-1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, transparent 70%);
+            top: 20%;
+            left: -10%;
+        }
+        
+        .nebula-2 {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(138,43,226,0.25) 0%, transparent 70%);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -15s;
+        }
+        
+        .nebula-3 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0,255,255,0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -30s;
+        }
+        
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -30px) scale(1.1); }
+            66% { transform: translate(-30px, 50px) scale(0.9); }
+        }
+        
+        /* Shooting Stars */
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, white, transparent);
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+            animation: shoot 6s linear infinite;
+        }
+        
+        @keyframes shoot {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-300px) translateY(200px);
+                opacity: 0;
+            }
+        }
+        
+        /* Custom Cursor */
+        .custom-cursor {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+        
+        .custom-cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease;
+        }
+        
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Navigation animation */
+        .nav-scrolled {
+            background: rgba(0,0,0,0.95) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+        
+        /* Overlapping text effect */
+        .overlap-text {
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 800;
+            line-height: 0.85;
+            letter-spacing: -0.03em;
+        }
+        
+        .stroke-text {
+            color: transparent;
+            -webkit-text-stroke: 1.5px rgba(255,255,255,0.2);
+        }
+        
+        /* Menu items with hover effect */
+        .menu-item {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 1.2rem 0;
+            display: flex;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .menu-item:hover {
+            border-bottom-color: rgba(255,255,255,0.3);
+            transform: translateX(8px);
+            padding-left: 8px;
+        }
+        
+        .menu-item:hover .menu-price {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        /* Gallery items */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        /* Form inputs */
+        .form-input {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-2px);
+        }
+        
+        /* Button animations */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+        
+        /* Loading spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-top-color: black;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: inline-block;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Success message animation */
+        .success-message {
+            animation: slideDown 0.4s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="bg-dark text-white">
-    <nav class="fixed w-full z-50 bg-black/90 backdrop-blur-md border-b border-green-500/30">
-        <div class="container mx-auto px-6 py-4">
+<body>
+    <!-- Galaxy Background -->
+    <div class="galaxy-bg"></div>
+    
+    <!-- Stars Container -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Nebula Clouds -->
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+    
+    <!-- Shooting Stars -->
+    <div class="shooting-star" style="top: 10%; left: 80%; animation-delay: 0s;"></div>
+    <div class="shooting-star" style="top: 30%; left: 60%; animation-delay: 3s;"></div>
+    <div class="shooting-star" style="top: 70%; left: 40%; animation-delay: 6s;"></div>
+    <div class="shooting-star" style="top: 50%; left: 90%; animation-delay: 9s;"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 border-b border-white/5" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <span class="text-3xl gaming-font font-bold text-green-500 neon-glow">LEVEL 9</span>
-                    <span class="text-xs text-gray-400">RESTAURANT & GAMING</span>
+                <div class="group cursor-pointer">
+                    <span class="text-2xl font-bold tracking-tighter">LEVEL 9</span>
+                    <span class="text-[9px] block text-white/40 tracking-[0.2em] group-hover:text-white/70 transition">RESTAURANT & GAMING</span>
                 </div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="hover:text-green-400 transition">Home</a>
-                    <a href="#menu" class="hover:text-green-400 transition">Menu</a>
-                    <a href="#gallery" class="hover:text-green-400 transition">Gallery</a>
-                    <a href="#reserve" class="hover:text-green-400 transition">Reserve</a>
-                    <a href="admin.html" class="text-green-500 border border-green-500 px-4 py-2 rounded-lg hover:bg-green-500 hover:text-black transition">Admin</a>
+                <div class="hidden md:flex space-x-10">
+                    <a href="#home" class="text-sm tracking-wide text-white/70 hover:text-white transition relative py-2">
+                        HOME
+                        <span class="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 hover:w-full"></span>
+                    </a>
+                    <a href="#menu" class="text-sm tracking-wide text-white/70 hover:text-white transition relative py-2">
+                        MENU
+                        <span class="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 hover:w-full"></span>
+                    </a>
+                    <a href="#gallery" class="text-sm tracking-wide text-white/70 hover:text-white transition relative py-2">
+                        GALLERY
+                        <span class="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 hover:w-full"></span>
+                    </a>
+                    <a href="#reserve" class="text-sm tracking-wide text-white/70 hover:text-white transition relative py-2">
+                        RESERVE
+                        <span class="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 hover:w-full"></span>
+                    </a>
+                    <a href="admin.html" class="text-sm tracking-wide text-white/50 hover:text-white transition ml-4">
+                        ADMIN
+                    </a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="min-h-screen flex items-center pt-20">
-        <div class="container mx-auto px-6">
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center relative pt-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 w-full">
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h1 class="text-6xl md:text-7xl gaming-font font-bold mb-4">
-                        <span class="text-green-500 neon-glow">LEVEL UP</span><br>
-                        Your Night
-                    </h1>
-                    <p class="text-xl text-gray-300 mb-8">Mixed cuisine restaurant + 12 PS5 consoles. Play while you eat, eat while you play.</p>
-                    <div class="flex space-x-4">
-                        <a href="#reserve" class="bg-green-500 text-black px-8 py-3 rounded-lg font-bold hover:bg-green-400 transition">Book Now →</a>
-                        <a href="#menu" class="border border-green-500 px-8 py-3 rounded-lg hover:bg-green-500/20 transition">View Menu</a>
+                <div data-aos="fade-up" data-aos-duration="1000">
+                    <div class="overlap-text mb-6">
+                        <div>LEVEL</div>
+                        <div class="stroke-text">LEVEL</div>
+                        <div>LEVEL</div>
                     </div>
-                    <div class="mt-8 flex space-x-6">
-                        <div><span class="text-2xl font-bold text-green-500">12</span><br>Tables</div>
-                        <div><span class="text-2xl font-bold text-green-500">12</span><br>PS5 Consoles</div>
-                        <div><span class="text-2xl font-bold text-green-500">50 EGP</span><br>/Hour Gaming</div>
+                    <p class="text-white/50 text-lg max-w-md leading-relaxed mb-8">
+                        Restaurant & Gaming Cafe. We cater to everyone. Can be great.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#reserve" class="btn-primary px-8 py-3 bg-white text-black font-semibold tracking-wide hover:bg-white/90 transition-all">
+                            RESERVE
+                        </a>
+                        <a href="#menu" class="px-8 py-3 border border-white/20 hover:border-white/50 transition-all hover:translate-y-[-2px]">
+                            MENU
+                        </a>
+                    </div>
+                    <div class="flex gap-8 mt-12 pt-4">
+                        <div>
+                            <div class="text-2xl font-bold">12</div>
+                            <div class="text-xs text-white/40 tracking-wide">TABLES</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold">12</div>
+                            <div class="text-xs text-white/40 tracking-wide">PS5 CONSOLES</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold">50 EGP</div>
+                            <div class="text-xs text-white/40 tracking-wide">/HOUR GAMING</div>
+                        </div>
                     </div>
                 </div>
-                <div class="relative">
-                    <div class="absolute inset-0 bg-gradient-to-r from-green-500/20 to-purple-500/20 blur-3xl"></div>
-                    <img src="https://images.unsplash.com/photo-1551103782-8ab5afd6c836?w=600" alt="Gaming setup" class="rounded-2xl shadow-2xl relative z-10">
+                <div data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-2xl blur-2xl"></div>
+                        <div class="relative aspect-square bg-gradient-to-br from-white/5 to-transparent rounded-2xl flex items-center justify-center overflow-hidden">
+                            <div class="text-center">
+                                <div class="text-9xl font-black tracking-tighter">9</div>
+                                <div class="text-xs tracking-[0.3em] mt-4 text-white/30">LEVELS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <div class="text-sm tracking-[0.3em] text-white/40 mb-3">DIGITAL MENU</div>
+                <h2 class="text-5xl md:text-6xl font-bold tracking-tighter">EAT & PLAY</h2>
+                <div class="w-12 h-px bg-white/20 mx-auto mt-6"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div data-aos="fade-right" data-aos-delay="100">
+                    <div class="mb-8">
+                        <h3 class="text-sm font-semibold tracking-wider text-white/60 mb-4">MAIN DISHES</h3>
+                        <div class="menu-item"><span>Level 9 Double Burger</span><span class="menu-price text-white/50">180 EGP</span></div>
+                        <div class="menu-item"><span>Peri-Peri Chicken</span><span class="menu-price text-white/50">160 EGP</span></div>
+                        <div class="menu-item"><span>Mixed Grill Platter</span><span class="menu-price text-white/50">250 EGP</span></div>
+                        <div class="menu-item"><span>Beef Shawarma Plate</span><span class="menu-price text-white/50">140 EGP</span></div>
+                        <div class="menu-item"><span>Chicken Alfredo Pasta</span><span class="menu-price text-white/50">130 EGP</span></div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-sm font-semibold tracking-wider text-white/60 mb-4">EGYPTIAN SPECIALS</h3>
+                        <div class="menu-item"><span>Koshari (Large)</span><span class="menu-price text-white/50">80 EGP</span></div>
+                        <div class="menu-item"><span>Fatta with Lamb</span><span class="menu-price text-white/50">220 EGP</span></div>
+                        <div class="menu-item"><span>Hawawshi (2 pcs)</span><span class="menu-price text-white/50">90 EGP</span></div>
+                        <div class="menu-item"><span>Alexandrian Liver</span><span class="menu-price text-white/50">110 EGP</span></div>
+                    </div>
+                </div>
+                
+                <div data-aos="fade-left" data-aos-delay="200">
+                    <div class="mb-8">
+                        <h3 class="text-sm font-semibold tracking-wider text-white/60 mb-4">APPETIZERS & PIZZA</h3>
+                        <div class="menu-item"><span>Loaded Nachos</span><span class="menu-price text-white/50">90 EGP</span></div>
+                        <div class="menu-item"><span>Buffalo Wings (8 pcs)</span><span class="menu-price text-white/50">120 EGP</span></div>
+                        <div class="menu-item"><span>Pepperoni Pizza</span><span class="menu-price text-white/50">150 EGP</span></div>
+                        <div class="menu-item"><span>Cheesy Fries</span><span class="menu-price text-white/50">70 EGP</span></div>
+                        <div class="menu-item"><span>Onion Rings</span><span class="menu-price text-white/50">60 EGP</span></div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-sm font-semibold tracking-wider text-white/60 mb-4">DRINKS</h3>
+                        <div class="menu-item"><span>Soft Drinks (Can)</span><span class="menu-price text-white/50">25 EGP</span></div>
+                        <div class="menu-item"><span>Fresh Juices</span><span class="menu-price text-white/50">40-60 EGP</span></div>
+                        <div class="menu-item"><span>Hot Drinks</span><span class="menu-price text-white/50">35 EGP</span></div>
+                        <div class="menu-item"><span>Energy Drink</span><span class="menu-price text-white/50">45 EGP</span></div>
+                        <div class="menu-item"><span>Milkshakes</span><span class="menu-price text-white/50">60 EGP</span></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="menu" class="py-20 bg-black/50">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl gaming-font text-center mb-12">⚡ DIGITAL MENU ⚡</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white/5 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-green-400 mb-6">🍔 MAIN DISHES</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between"><span>Level 9 Double Burger</span><span class="text-green-400">180 EGP</span></div>
-                        <div class="flex justify-between"><span>Peri-Peri Chicken</span><span class="text-green-400">160 EGP</span></div>
-                        <div class="flex justify-between"><span>Mixed Grill Platter</span><span class="text-green-400">250 EGP</span></div>
-                        <div class="flex justify-between"><span>Beef Shawarma Plate</span><span class="text-green-400">140 EGP</span></div>
-                        <div class="flex justify-between"><span>Chicken Alfredo Pasta</span><span class="text-green-400">130 EGP</span></div>
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-32 bg-white/5 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <div class="text-sm tracking-[0.3em] text-white/40 mb-3">GALLERY</div>
+                <h2 class="text-5xl md:text-6xl font-bold tracking-tighter">THE SPACE</h2>
+                <div class="w-12 h-px bg-white/20 mx-auto mt-6"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="gallery-item aspect-square bg-gradient-to-br from-white/10 to-transparent" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="gallery-overlay">
+                        <span class="text-sm tracking-wide">GAMING AREA</span>
                     </div>
                 </div>
-                <div class="bg-white/5 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-green-400 mb-6">🍕 APPETIZERS & PIZZA</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between"><span>Loaded Nachos</span><span class="text-green-400">90 EGP</span></div>
-                        <div class="flex justify-between"><span>Buffalo Wings (8 pcs)</span><span class="text-green-400">120 EGP</span></div>
-                        <div class="flex justify-between"><span>Pepperoni Pizza</span><span class="text-green-400">150 EGP</span></div>
-                        <div class="flex justify-between"><span>Cheesy Fries</span><span class="text-green-400">70 EGP</span></div>
-                        <div class="flex justify-between"><span>Onion Rings</span><span class="text-green-400">60 EGP</span></div>
+                <div class="gallery-item aspect-square bg-gradient-to-tl from-white/10 to-transparent" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="gallery-overlay">
+                        <span class="text-sm tracking-wide">DINING HALL</span>
                     </div>
                 </div>
-                <div class="bg-white/5 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-green-400 mb-6">🇪🇬 EGYPTIAN SPECIALS</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between"><span>Koshari (Large)</span><span class="text-green-400">80 EGP</span></div>
-                        <div class="flex justify-between"><span>Fatta with Lamb</span><span class="text-green-400">220 EGP</span></div>
-                        <div class="flex justify-between"><span>Hawawshi (2 pcs)</span><span class="text-green-400">90 EGP</span></div>
-                        <div class="flex justify-between"><span>Alexandrian Liver</span><span class="text-green-400">110 EGP</span></div>
+                <div class="gallery-item aspect-square bg-gradient-to-r from-white/10 to-transparent" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="gallery-overlay">
+                        <span class="text-sm tracking-wide">PS5 ZONE</span>
                     </div>
                 </div>
-                <div class="bg-white/5 rounded-2xl p-8">
-                    <h3 class="text-2xl font-bold text-green-400 mb-6">🥤 DRINKS</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between"><span>Soft Drinks (Can)</span><span class="text-green-400">25 EGP</span></div>
-                        <div class="flex justify-between"><span>Fresh Juices</span><span class="text-green-400">40-60 EGP</span></div>
-                        <div class="flex justify-between"><span>Hot Drinks (Coffee/Tea)</span><span class="text-green-400">35 EGP</span></div>
-                        <div class="flex justify-between"><span>Energy Drink</span><span class="text-green-400">45 EGP</span></div>
-                    </div>
-                </div>
+            </div>
+            <div class="text-center mt-6 text-white/20 text-xs tracking-wide">
+                [ DRAG TO EXPLORE — MORE PHOTOS COMING SOON ]
             </div>
         </div>
     </section>
 
-    <section id="gallery" class="py-20">
-        <div class="container mx-auto px-6">
-            <h2 class="text-4xl gaming-font text-center mb-12">📸 VENUE GALLERY</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400" alt="Gaming area" class="rounded-2xl hover:scale-105 transition duration-300">
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400" alt="Restaurant interior" class="rounded-2xl hover:scale-105 transition duration-300">
-                <img src="https://images.unsplash.com/photo-1592861956120-e524fc739696?w=400" alt="Food" class="rounded-2xl hover:scale-105 transition duration-300">
+    <!-- Reservation Section -->
+    <section id="reserve" class="py-32 relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <div class="text-sm tracking-[0.3em] text-white/40 mb-3">BOOK YOUR SPOT</div>
+                <h2 class="text-5xl md:text-6xl font-bold tracking-tighter">RESERVE</h2>
+                <div class="w-12 h-px bg-white/20 mx-auto mt-6"></div>
             </div>
-        </div>
-    </section>
-
-    <section id="reserve" class="py-20 bg-black/50">
-        <div class="container mx-auto px-6 max-w-4xl">
-            <h2 class="text-4xl gaming-font text-center mb-12">🎮 MAKE A RESERVATION</h2>
-            <div id="connectionStatus" class="mb-4 p-3 rounded-lg text-center"></div>
-            <div class="bg-white/10 rounded-2xl p-8">
+            
+            <div id="connectionStatus" class="mb-6 p-3 text-center text-sm"></div>
+            
+            <div class="border border-white/10 p-8 md:p-12" data-aos="fade-up" data-aos-delay="100">
                 <form id="bookingForm" class="space-y-6">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block mb-2">Booking Type *</label>
-                            <select id="resourceType" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
-                                <option value="table">🍽️ Table (Dining Only)</option>
-                                <option value="ps5">🎮 PS5 Console + Gaming (50 EGP/hour)</option>
+                            <label class="block text-xs tracking-wide text-white/40 mb-2">BOOKING TYPE</label>
+                            <select id="resourceType" class="form-input w-full p-3 outline-none transition rounded-none" required>
+                                <option value="table" class="bg-black">🍽️ TABLE (DINING ONLY)</option>
+                                <option value="ps5" class="bg-black">🎮 PS5 CONSOLE (50 EGP/HOUR)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block mb-2">Date *</label>
-                            <input type="date" id="date" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                            <label class="block text-xs tracking-wide text-white/40 mb-2">DATE</label>
+                            <input type="date" id="date" class="form-input w-full p-3 outline-none transition rounded-none" required>
                         </div>
                         <div>
-                            <label class="block mb-2">Hour (1-hour slot) *</label>
-                            <select id="hourSlot" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
-                                <option value="">-- Select a date first --</option>
+                            <label class="block text-xs tracking-wide text-white/40 mb-2">HOUR (1-HOUR SLOT)</label>
+                            <select id="hourSlot" class="form-input w-full p-3 outline-none transition rounded-none" required>
+                                <option value="" class="bg-black">-- SELECT DATE FIRST --</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block mb-2">Your Name *</label>
-                            <input type="text" id="guestName" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                            <label class="block text-xs tracking-wide text-white/40 mb-2">YOUR NAME</label>
+                            <input type="text" id="guestName" class="form-input w-full p-3 outline-none transition rounded-none" required>
                         </div>
-                        <div>
-                            <label class="block mb-2">Phone Number *</label>
-                            <input type="tel" id="guestPhone" class="w-full px-4 py-2 bg-black/50 border border-green-500 rounded-lg focus:outline-none" required>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs tracking-wide text-white/40 mb-2">PHONE NUMBER</label>
+                            <input type="tel" id="guestPhone" class="form-input w-full p-3 outline-none transition rounded-none" required>
                         </div>
                     </div>
-                    <button type="submit" id="submitBtn" class="w-full bg-green-500 text-black font-bold py-3 rounded-lg hover:bg-green-400 transition">Confirm Reservation</button>
+                    <button type="submit" id="submitBtn" class="btn-primary w-full py-4 bg-white text-black font-semibold tracking-wide transition-all">
+                        CONFIRM RESERVATION
+                    </button>
                 </form>
-                <div id="message" class="mt-4 text-center hidden"></div>
+                <div id="message" class="mt-6 text-center text-sm hidden"></div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-black/80 py-10 mt-20">
-        <div class="container mx-auto px-6 text-center">
-            <p>20 Street 9, Sakanat, El Maadi, Cairo | 📞 0227516662</p>
+    <!-- Footer -->
+    <footer class="py-16 border-t border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+                <div data-aos="fade-up">
+                    <div class="text-2xl font-bold tracking-tighter">LEVEL 9</div>
+                    <div class="text-[9px] tracking-[0.2em] text-white/40 mt-1">RESTAURANT & GAMING</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-sm font-semibold mb-3 tracking-wide">LOCATION</div>
+                    <p class="text-white/40 text-sm leading-relaxed">20 Street 9, Sakanat<br>El Maadi, Cairo<br>11728</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-sm font-semibold mb-3 tracking-wide">CONTACT</div>
+                    <p class="text-white/40 text-sm">0227516662</p>
+                    <p class="text-white/30 text-xs mt-2">OPEN: 10 AM - 11 PM</p>
+                </div>
+            </div>
+            <div class="text-center text-white/20 text-[10px] tracking-wider mt-12 pt-8 border-t border-white/5">
+                LEVEL 9 — LEVEL UP YOUR DAY
+            </div>
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // ⚠️ REPLACE WITH YOUR ACTUAL SUPABASE CREDENTIALS
+        AOS.init({ duration: 800, once: true, offset: 100 });
+        
+        // Generate Stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+        
+        // Custom cursor
+        const cursor = document.querySelector('.custom-cursor');
+        const cursorFollower = document.querySelector('.custom-cursor-follower');
+        
+        if (cursor && cursorFollower) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+                cursorFollower.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+            });
+        }
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+                navbar.style.padding = '1rem 0';
+            } else {
+                navbar.classList.remove('nav-scrolled');
+                navbar.style.padding = '1.5rem 0';
+            }
+        });
+        
+        // YOUR SUPABASE CREDENTIALS
         const SUPABASE_URL = 'https://valutzpbnwdxrbgwyeld.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_c0u-6UfiWcB_IE6EYbPOMQ_1vaKRPGv';
         
-        // Initialize Supabase
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
         let resourcesCache = { table: [], ps5: [] };
         
         async function testConnection() {
             const statusDiv = document.getElementById('connectionStatus');
-            statusDiv.innerHTML = '🔄 Connecting to Supabase...';
-            statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-yellow-500/20 text-yellow-300';
+            statusDiv.innerHTML = 'CONNECTING...';
+            statusDiv.className = 'mb-6 p-3 text-center text-sm text-white/40';
             
             try {
-                const { data, error } = await supabaseClient.from('settings').select('key').limit(1);
-                
-                if (error) {
-                    statusDiv.innerHTML = '❌ Connection failed! Error: ' + error.message;
-                    statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-red-500/20 text-red-300';
-                    return false;
-                }
-                
-                statusDiv.innerHTML = '✅ Connected to Supabase! You can make reservations.';
-                statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-green-500/20 text-green-300';
+                const { error } = await supabaseClient.from('settings').select('key').limit(1);
+                if (error) throw error;
+                statusDiv.innerHTML = '● READY TO RESERVE';
+                statusDiv.className = 'mb-6 p-3 text-center text-sm text-green-500/60';
                 return true;
-                
             } catch (err) {
-                statusDiv.innerHTML = '❌ Connection error: ' + err.message;
-                statusDiv.className = 'mb-4 p-3 rounded-lg text-center bg-red-500/20 text-red-300';
+                statusDiv.innerHTML = '⚠️ CONNECTION ERROR — CHECK SETUP';
+                statusDiv.className = 'mb-6 p-3 text-center text-sm text-red-500/60';
                 return false;
             }
         }
         
         async function loadResources() {
-            const { data, error } = await supabaseClient.from('resources').select('*').eq('is_active', true);
-            if (error) {
-                console.error('Error loading resources:', error);
-                return false;
+            const { data } = await supabaseClient.from('resources').select('*').eq('is_active', true);
+            if (data) {
+                resourcesCache.table = data.filter(r => r.type === 'table');
+                resourcesCache.ps5 = data.filter(r => r.type === 'ps5');
             }
-            resourcesCache.table = data.filter(r => r.type === 'table');
-            resourcesCache.ps5 = data.filter(r => r.type === 'ps5');
-            console.log('Resources loaded:', resourcesCache.table.length, 'tables,', resourcesCache.ps5.length, 'PS5s');
-            return true;
         }
         
         async function loadAvailableSlots() {
@@ -216,11 +642,11 @@
             const select = document.getElementById('hourSlot');
             
             if (!date) {
-                select.innerHTML = '<option value="">-- Select a date first --</option>';
+                select.innerHTML = '<option value="">-- SELECT DATE FIRST --</option>';
                 return;
             }
             
-            select.innerHTML = '<option value="">Loading available hours...</option>';
+            select.innerHTML = '<option value="">LOADING...</option>';
             select.disabled = true;
             
             try {
@@ -231,16 +657,15 @@
                 
                 const openHour = parseInt(settings?.find(s => s.key === 'open_hour')?.value || '10');
                 const closeHour = parseInt(settings?.find(s => s.key === 'close_hour')?.value || '23');
-                
                 const resources = resourcesCache[type];
+                
                 if (!resources || resources.length === 0) {
-                    select.innerHTML = '<option value="">No resources available</option>';
+                    select.innerHTML = '<option value="">NO RESOURCES</option>';
                     select.disabled = false;
                     return;
                 }
                 
                 const resourceIds = resources.map(r => r.id);
-                
                 const { data: bookings } = await supabaseClient
                     .from('reservations')
                     .select('hour_slot')
@@ -249,11 +674,9 @@
                     .eq('status', 'confirmed');
                 
                 const bookedCount = {};
-                bookings?.forEach(b => {
-                    bookedCount[b.hour_slot] = (bookedCount[b.hour_slot] || 0) + 1;
-                });
+                bookings?.forEach(b => bookedCount[b.hour_slot] = (bookedCount[b.hour_slot] || 0) + 1);
                 
-                select.innerHTML = '<option value="">-- Select an hour --</option>';
+                select.innerHTML = '<option value="">-- SELECT HOUR --</option>';
                 select.disabled = false;
                 
                 let hasAvailable = false;
@@ -263,37 +686,26 @@
                         hasAvailable = true;
                         const option = document.createElement('option');
                         option.value = hour;
-                        option.textContent = `${hour}:00 - ${hour+1}:00 ${taken > 0 ? `(${resources.length - taken} left)` : ''}`;
+                        option.textContent = `${hour}:00 — ${hour+1}:00 ${taken > 0 ? `(${resources.length - taken} LEFT)` : ''}`;
                         select.appendChild(option);
                     }
                 }
                 
-                if (!hasAvailable) {
-                    select.innerHTML = '<option value="">No available hours on this date</option>';
-                }
-                
+                if (!hasAvailable) select.innerHTML = '<option value="">FULLY BOOKED</option>';
             } catch (error) {
-                console.error('Error loading slots:', error);
-                select.innerHTML = '<option value="">Error loading hours</option>';
+                select.innerHTML = '<option value="">ERROR</option>';
                 select.disabled = false;
             }
         }
         
-        // Initialize page
         const today = new Date().toISOString().split('T')[0];
-        const dateInput = document.getElementById('date');
-        dateInput.value = today;
-        dateInput.min = today;
-        
-        // Add event listeners
+        document.getElementById('date').value = today;
+        document.getElementById('date').min = today;
         document.getElementById('date').addEventListener('change', loadAvailableSlots);
         document.getElementById('resourceType').addEventListener('change', loadAvailableSlots);
         
-        // Handle form submission
-        const form = document.getElementById('bookingForm');
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const type = document.getElementById('resourceType').value;
             const date = document.getElementById('date').value;
             const hourSlot = parseInt(document.getElementById('hourSlot').value);
@@ -302,29 +714,21 @@
             const messageDiv = document.getElementById('message');
             const submitBtn = document.getElementById('submitBtn');
             
-            // Validation
-            if (!hourSlot) {
-                messageDiv.innerHTML = '<div class="text-yellow-500">⚠️ Please select an hour slot</div>';
+            if (!hourSlot || !guestName || !guestPhone) {
+                messageDiv.innerHTML = '<span class="text-yellow-500/80">⚠️ FILL ALL FIELDS</span>';
                 messageDiv.classList.remove('hidden');
+                setTimeout(() => messageDiv.classList.add('hidden'), 3000);
                 return;
             }
             
-            if (!guestName || !guestPhone) {
-                messageDiv.innerHTML = '<div class="text-yellow-500">⚠️ Please enter your name and phone number</div>';
-                messageDiv.classList.remove('hidden');
-                return;
-            }
-            
-            // Disable button and show loading
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Processing...';
+            submitBtn.innerHTML = '<span class="spinner mr-2"></span> PROCESSING...';
             messageDiv.classList.add('hidden');
             
             try {
                 const resources = resourcesCache[type];
                 const resourceIds = resources.map(r => r.id);
                 
-                // Check availability again
                 const { data: booked } = await supabaseClient
                     .from('reservations')
                     .select('resource_id')
@@ -337,52 +741,40 @@
                 const availableResource = resources.find(r => !bookedIds.has(r.id));
                 
                 if (!availableResource) {
-                    messageDiv.innerHTML = '<div class="text-red-500">❌ Sorry, this slot was just taken! Please choose another hour.</div>';
+                    messageDiv.innerHTML = '<span class="text-red-500/80">❌ SLOT JUST TAKEN — TRY ANOTHER</span>';
                     messageDiv.classList.remove('hidden');
-                    loadAvailableSlots(); // Refresh available slots
+                    loadAvailableSlots();
                     return;
                 }
                 
-                // Create reservation
-                const { error: insertError } = await supabaseClient.from('reservations').insert({
+                const { error } = await supabaseClient.from('reservations').insert({
                     resource_id: availableResource.id,
                     guest_name: guestName,
                     guest_phone: guestPhone,
                     reservation_date: date,
-                    hour_slot: hourSlot,
-                    status: 'confirmed'
+                    hour_slot: hourSlot
                 });
                 
-                if (insertError) throw insertError;
+                if (error) throw error;
                 
-                // Success
-                messageDiv.innerHTML = '<div class="text-green-500">✅ Reservation confirmed! See you at Level 9! 🎮</div>';
+                messageDiv.innerHTML = '<span class="text-green-500/80 success-message">✓ RESERVATION CONFIRMED! SEE YOU AT LEVEL 9</span>';
                 messageDiv.classList.remove('hidden');
-                
-                // Clear name and phone
                 document.getElementById('guestName').value = '';
                 document.getElementById('guestPhone').value = '';
+                loadAvailableSlots();
                 
-                // Refresh available slots
-                await loadAvailableSlots();
-                
+                setTimeout(() => messageDiv.classList.add('hidden'), 5000);
             } catch (error) {
-                console.error('Reservation error:', error);
-                messageDiv.innerHTML = '<div class="text-red-500">❌ Error: ' + error.message + '</div>';
+                messageDiv.innerHTML = '<span class="text-red-500/80">❌ ERROR: ' + error.message + '</span>';
                 messageDiv.classList.remove('hidden');
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirm Reservation';
+                submitBtn.innerHTML = 'CONFIRM RESERVATION';
             }
         });
         
-        // Start the app
         testConnection().then(connected => {
-            if (connected) {
-                loadResources().then(() => {
-                    loadAvailableSlots();
-                });
-            }
+            if (connected) loadResources().then(() => loadAvailableSlots());
         });
     </script>
 </body>
