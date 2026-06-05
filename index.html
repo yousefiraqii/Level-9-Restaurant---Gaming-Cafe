@@ -6,7 +6,7 @@
     <title>LEVEL 9 | Restaurant & Gaming Cafe - Cairo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <style>
         * {
@@ -289,6 +289,11 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* Secret admin hint - completely invisible element for routing detection */
+        .admin-secret-route {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -313,7 +318,7 @@
     <div class="custom-cursor"></div>
     <div class="custom-cursor-follower"></div>
 
-    <!-- Navigation -->
+    <!-- Navigation - ADMIN LINK REMOVED -->
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-6 border-b border-white/5" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex justify-between items-center">
@@ -338,9 +343,7 @@
                         RESERVE
                         <span class="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 hover:w-full"></span>
                     </a>
-                    <a href="admin.html" class="text-sm tracking-wide text-white/50 hover:text-white transition ml-4">
-                        ADMIN
-                    </a>
+                    <!-- ADMIN LINK COMPLETELY REMOVED FOR SECURITY -->
                 </div>
             </div>
         </div>
@@ -560,6 +563,127 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
+        // ========================
+        // SECURE ADMIN ROUTING SYSTEM
+        // ========================
+        // The admin panel is hidden behind a unique, secret hash route.
+        // No visible link exists on the page. Access admin by appending #level9-admin-secure to the URL.
+        // Example: index.html#level9-admin-secure
+        // This prevents casual discovery while allowing authorized access.
+        
+        const SECRET_HASH = 'level9-admin-secure';
+        let adminIframeLoaded = false;
+        
+        // Check if the URL contains the secret admin hash
+        function checkForAdminAccess() {
+            const currentHash = window.location.hash.substring(1); // Remove the # symbol
+            if (currentHash === SECRET_HASH) {
+                loadAdminPanel();
+            }
+        }
+        
+        // Load the admin panel dynamically (injects the admin.html content)
+        function loadAdminPanel() {
+            if (adminIframeLoaded) return;
+            adminIframeLoaded = true;
+            
+            // Create a fullscreen overlay for admin panel
+            const adminOverlay = document.createElement('div');
+            adminOverlay.id = 'adminOverlay';
+            adminOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #0a0a0a;
+                z-index: 10000;
+                overflow-y: auto;
+                animation: fadeIn 0.4s ease;
+            `;
+            
+            // Add close button (optional, but convenient)
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '✕ CLOSE ADMIN';
+            closeBtn.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10001;
+                background: rgba(255,255,255,0.1);
+                border: 1px solid rgba(255,255,255,0.2);
+                color: white;
+                padding: 10px 20px;
+                cursor: pointer;
+                font-size: 12px;
+                letter-spacing: 1px;
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease;
+            `;
+            closeBtn.onmouseover = () => closeBtn.style.background = 'rgba(255,255,255,0.2)';
+            closeBtn.onmouseout = () => closeBtn.style.background = 'rgba(255,255,255,0.1)';
+            closeBtn.onclick = () => {
+                adminOverlay.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    adminOverlay.remove();
+                    window.location.hash = '';
+                }, 300);
+            };
+            
+            // Create iframe to load admin.html content directly
+            const iframe = document.createElement('iframe');
+            iframe.src = 'admin.html';
+            iframe.style.cssText = `
+                width: 100%;
+                height: 100%;
+                border: none;
+                background: #0a0a0a;
+            `;
+            
+            adminOverlay.appendChild(iframe);
+            adminOverlay.appendChild(closeBtn);
+            document.body.appendChild(adminOverlay);
+            
+            // Add animation keyframes
+            if (!document.querySelector('#adminAnimStyles')) {
+                const style = document.createElement('style');
+                style.id = 'adminAnimStyles';
+                style.textContent = `
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes fadeOut {
+                        from { opacity: 1; }
+                        to { opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Listen for hash changes (so user can navigate to admin even after page load)
+        window.addEventListener('hashchange', () => {
+            const currentHash = window.location.hash.substring(1);
+            if (currentHash === SECRET_HASH) {
+                loadAdminPanel();
+            } else {
+                // If admin overlay is open and hash changes away, close it
+                const existingOverlay = document.getElementById('adminOverlay');
+                if (existingOverlay && currentHash !== SECRET_HASH) {
+                    existingOverlay.style.animation = 'fadeOut 0.3s ease';
+                    setTimeout(() => existingOverlay.remove(), 300);
+                }
+            }
+        });
+        
+        // Check on initial load
+        checkForAdminAccess();
+        
+        // ========================
+        // REST OF ORIGINAL SCRIPT (Stars, Cursor, Supabase, Reservations)
+        // ========================
+        
         AOS.init({ duration: 800, once: true, offset: 100 });
         
         // Generate Stars
@@ -603,7 +727,7 @@
             }
         });
         
-        // YOUR SUPABASE CREDENTIALS
+        // Supabase credentials
         const SUPABASE_URL = 'https://valutzpbnwdxrbgwyeld.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_c0u-6UfiWcB_IE6EYbPOMQ_1vaKRPGv';
         
